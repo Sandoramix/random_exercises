@@ -18,21 +18,43 @@ from curses.ascii import isdigit
 
 inputs = [
 	"3[a]2[bc]",
-	"3[a2[c]]"
+	# "3[a2[c]]"
 ]
 
 solutions = [
 	"aaabcbc",
-	"accaccacc"
+	# "accaccacc"
 ]
 
+def rec(s: "str"):
+	s_len = len(s)
+	opening_idx = s.index("[")
+
+	opening_count = 1
+	end_idx = opening_idx + 1
+	while (opening_count != 0 and end_idx < s_len):
+		if (s[end_idx] == '['):
+			opening_count += 1
+		if (s[end_idx] == ']'):
+			opening_count -= 1
+		if (opening_count > 0):
+			end_idx += 1
+
+	text = ""
+	number_end = opening_idx - 1
+	while (number_end >= 0 and not s[number_end].isdigit()):
+		text = text + s[number_end]
+		number_end += 1
+
+	text += rec(s[opening_idx + 1:end_idx])
+
+	if number_end < 0: return text
+	n = int(s[:number_end])
+	text = text * n
+	return text
+
 def solve(input: "str"):
-	start = end = 0
-	input_len = len(input)
-
-	input.index("[")
-
-	pass
+	return rec(input)
 
 
 #------------------------------------------------------------------------------
