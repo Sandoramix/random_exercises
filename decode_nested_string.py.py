@@ -27,31 +27,8 @@ solutions = [
 ]
 
 def rec(s: "str"):
-	s_len = len(s)
-	opening_idx = s.index("[")
-
-	opening_count = 1
-	end_idx = opening_idx + 1
-	while (opening_count != 0 and end_idx < s_len):
-		if (s[end_idx] == '['):
-			opening_count += 1
-		if (s[end_idx] == ']'):
-			opening_count -= 1
-		if (opening_count > 0):
-			end_idx += 1
-
-	text = ""
-	number_end = opening_idx - 1
-	while (number_end >= 0 and not s[number_end].isdigit()):
-		text = text + s[number_end]
-		number_end += 1
-
-	text += rec(s[opening_idx + 1:end_idx])
-
-	if number_end < 0: return text
-	n = int(s[:number_end])
-	text = text * n
-	return text
+	# TODO
+	return s
 
 def solve(input: "str"):
 	return rec(input)
