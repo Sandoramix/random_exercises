@@ -13,25 +13,39 @@ Output: "accaccacc"
 
 #------------------------------------------------------------------------------
 
-from curses.ascii import isdigit
-
-
 inputs = [
 	"3[a]2[bc]",
-	# "3[a2[c]]"
+	"3[a2[c]]",
+	"1[2[a2[ci]]]"
 ]
 
 solutions = [
 	"aaabcbc",
-	# "accaccacc"
+	"accaccacc",
+	"aciciacici"
 ]
 
-def rec(s: "str"):
-	# TODO
-	return s
+# Write your code here --------------------------------------------------------
 
 def solve(input: "str"):
-	return rec(input)
+	stack = []
+	current_num = 0
+	result = ""
+
+	for c in input:
+		if c.isdigit():
+			current_num = current_num * 10 + int(c)
+		elif c == "[":
+			stack.append((result, current_num))
+			result = ""
+			current_num = 0
+		elif c == "]":
+			last_result, num = stack.pop()
+			result = last_result + result * num
+		else:
+			result += c
+
+	return result
 
 
 #------------------------------------------------------------------------------
@@ -44,15 +58,19 @@ def run_and_test():
 		result = solve(input)
 		solution = solutions[idx]
 		print(f"{idx}:\t", end="")
-		if (result == solution): print("OK")
-		else: print("KO")
+		if (result == solution):
+			print("OK")
+		else:
+			print("KO")
 
 def run():
 	for idx, input in enumerate(inputs):
 		result = solve(input)
-		print(f"{idx}[{input}]:\t{result}")
+		print(f"{idx} {{ input: {input},\tresult: {result},\tsolution: {solutions[idx]},\tmatch: {'OK' if result == solutions[idx] else 'KO'} }}")
 
 if __name__ == "__main__":
 	TEST=False
-	if TEST: run_and_test()
-	else: run()
+	if TEST:
+		run_and_test()
+	else:
+		run()
